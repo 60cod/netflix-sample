@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1CMTALK</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #e50914;
+            --background-color: #141414;
+            --card-background-color: #242424;
+            --text-color: #ffffff;
+            --text-color-secondary: #a0a0a0;
+            --font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        }
+
+        /* General Styles */
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            font-family: var(--font-family);
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: var(--text-color);
+            text-decoration: none;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 3rem;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 10%, rgba(0,0,0,0));
+            z-index: 1000;
+            transition: background-color 0.3s;
+        }
+
+        header.scrolled {
+            background-color: var(--background-color);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-right: 2rem;
+        }
+
+        .nav-link {
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .search-bar {
+            position: relative;
+            margin-right: 1.5rem;
+        }
+
+        .search-bar input {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--text-color-secondary);
+            color: var(--text-color);
+            padding: 0.5rem 0.5rem 0.5rem 2.5rem;
+            border-radius: 4px;
+            width: 0;
+            opacity: 0;
+            transition: width 0.3s, opacity 0.3s;
+        }
+
+        .search-bar .search-icon {
+            position: absolute;
+            left: 0.8rem;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+        }
+        
+        .search-bar:hover input, .search-bar input:focus {
+            width: 200px;
+            opacity: 1;
+        }
+
+        .profile-pic {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            background-color: #333;
+            overflow: hidden;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Main Content - Home View */
+        #home-view {
+            padding-top: 80px;
+        }
+
+        .category-slider {
+            margin: 3rem;
+        }
+
+        .category-title {
+            font-size: 1.6rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .slider-content {
+            display: flex;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 1.5rem; /* For scrollbar space */
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) #333;
+            cursor: grab;
+            scroll-behavior: smooth;
+        }
+
+        .slider-content:active {
+            cursor: grabbing;
+        }
+
+        .slider-content::-webkit-scrollbar {
+            height: 8px;
+        }
+        .slider-content::-webkit-scrollbar-track {
+            background: #333;
+            border-radius: 4px;
+        }
+        .slider-content::-webkit-scrollbar-thumb {
+            background-color: var(--primary-color);
+            border-radius: 4px;
+        }
+
+        .card {
+            flex: 0 0 24%;
+            margin-right: 1%;
+            aspect-ratio: 16 / 9;
+            background-color: var(--card-background-color);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            z-index: 10;
+        }
+        
+        .card:last-child {
+            margin-right: 0;
+        }
+
+        .card-thumbnail {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+        }
+        
+        .card-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            font-size: 1rem;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .card-title-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            font-weight: bold;
+            font-size: 1.1rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .card:hover .card-title-overlay {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Post Detail View */
+        #post-view {
+            display: none;
+            padding: 100px 5% 5%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .back-button-container {
+            margin-bottom: 2rem;
+        }
+
+        .back-button {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            padding: 0.8rem 1rem;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .back-button:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .post-header {
+            margin-bottom: 2.5rem;
+        }
+
+        #post-title {
+            font-size: 3rem;
+            font-weight: bold;
+            margin: 0 0 1rem 0;
+        }
+
+        .post-meta {
+            color: var(--text-color-secondary);
+            font-size: 1rem;
+        }
+
+        #post-content {
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        #post-content h1, #post-content h2, #post-content h3 {
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+
+        #post-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+
+        #post-content pre {
+            background-color: #000;
+            border-radius: 8px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.95rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        #post-content code {
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        #post-content blockquote {
+            border-left: 4px solid var(--text-color-secondary);
+            padding-left: 1.5rem;
+            margin-left: 0;
+            color: var(--text-color-secondary);
+            font-style: italic;
+        }
+        
+        /* Loading & Error State */
+        .status-message {
+            text-align: center;
+            font-size: 1.5rem;
+            padding: 5rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .card { flex: 0 0 32%; }
+        }
+
+        @media (max-width: 992px) {
+            header { padding: 1rem 2rem; }
+            .category-slider { margin: 2rem; }
+            .card { flex: 0 0 48%; }
+            #post-title { font-size: 2.5rem; }
+        }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 1.5rem; }
+            .nav-link { display: none; } /* Hide Home on mobile */
+            .search-bar:hover input, .search-bar input:focus { width: 150px; }
+            .card { flex: 0 0 65%; }
+            #post-view { padding: 80px 5% 5%; }
+             #post-title { font-size: 2rem; }
+        }
+
+        @media (max-width: 576px) {
+            header { padding: 0.8rem 1rem; }
+            .category-slider { margin: 1.5rem; }
+            .category-title { font-size: 1.3rem; }
+            .card { flex: 0 0 90%; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <header id="header">
+        <div class="header-left">
+            <a href="/" class="logo">1CMTALK</a>
+            <a href="/" class="nav-link">홈</a>
+        </div>
+        <div class="header-right">
+            <div class="search-bar">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" placeholder="검색...">
+            </div>
+            <div class="profile-pic">
+                <img src="https://placehold.co/32x32/E50914/FFFFFF?text=1" alt="Profile">
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="home-view">
+            <!-- Dynamic content will be inserted here -->
+            <div id="sliders-container"></div>
+        </div>
+
+        <div id="post-view">
+            <div class="back-button-container">
+                <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i></button>
+            </div>
+            <div class="post-header">
+                <h1 id="post-title"></h1>
+                <div class="post-meta">
+                    <span id="post-author"></span> &bull; <span id="post-date"></span>
+                </div>
+            </div>
+            <div id="post-content">
+                <!-- Post HTML content will be loaded here -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const API_URL = './content/posts.json';
+        const POSTS_BASE_URL = './content/posts/';
+
+        const homeView = document.getElementById('home-view');
+        const postView = document.getElementById('post-view');
+        const slidersContainer = document.getElementById('sliders-container');
+        
+        let allPostsData = {};
+
+        // --- Routing ---
+        document.addEventListener('DOMContentLoaded', () => {
+            router();
+            window.addEventListener('popstate', router);
+        });
+
+        function router() {
+            const params = new URLSearchParams(window.location.search);
+            const postId = params.get('post');
+
+            if (postId) {
+                showPostDetails(postId);
+            } else {
+                showHomePage();
+            }
+        }
+        
+        function navigate(path) {
+            window.history.pushState({}, '', path);
+            router();
+        }
+
+        function goBack() {
+            window.history.back();
+        }
+
+        // --- Page Rendering ---
+        async function showHomePage() {
+            homeView.style.display = 'block';
+            postView.style.display = 'none';
+            document.body.style.overflowX = 'hidden';
+
+            if (Object.keys(allPostsData).length === 0) {
+                await loadPosts();
+            }
+            renderSliders();
+        }
+
+        async function showPostDetails(postId) {
+            homeView.style.display = 'none';
+            postView.style.display = 'block';
+            window.scrollTo(0, 0);
+            document.body.style.overflowX = 'auto';
+
+            if (Object.keys(allPostsData).length === 0) {
+                await loadPosts();
+            }
+
+            const post = findPostById(postId);
+            
+            if (post) {
+                document.getElementById('post-title').textContent = post.title;
+                document.getElementById('post-author').textContent = post.author;
+                document.getElementById('post-date').textContent = new Date(post.date).toLocaleDateString();
+
+                try {
+                    const response = await fetch(`${POSTS_BASE_URL}${post.id}.html`);
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    const contentHtml = await response.text();
+                    document.getElementById('post-content').innerHTML = contentHtml;
+                } catch (error) {
+                    console.error("Error fetching post content:", error);
+                    document.getElementById('post-content').innerHTML = `<p class="status-message">콘텐츠를 불러오는 데 실패했습니다.</p>`;
+                }
+            } else {
+                 document.getElementById('post-content').innerHTML = `<p class="status-message">포스트를 찾을 수 없습니다.</p>`;
+            }
+        }
+
+        // --- Data Fetching and Processing ---
+        async function loadPosts() {
+            slidersContainer.innerHTML = `<p class="status-message">콘텐츠를 불러오는 중...</p>`;
+            try {
+                const response = await fetch(`${API_URL}?t=${new Date().getTime()}`); // Cache busting
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                allPostsData = await response.json();
+            } catch (error) {
+                console.error("Failed to load posts data:", error);
+                slidersContainer.innerHTML = `<p class="status-message">콘텐츠 로딩에 실패했습니다. 다시 시도해 주세요.</p>`;
+            }
+        }
+        
+        function findPostById(postId) {
+            for (const category in allPostsData) {
+                const found = allPostsData[category].find(p => p.id === postId);
+                if (found) return found;
+            }
+            return null;
+        }
+
+        // --- UI Rendering ---
+        function renderSliders() {
+            slidersContainer.innerHTML = '';
+            for (const category in allPostsData) {
+                const section = document.createElement('section');
+                section.className = 'category-slider';
+                
+                const title = document.createElement('h2');
+                title.className = 'category-title';
+                title.textContent = category;
+                section.appendChild(title);
+
+                const sliderContent = document.createElement('div');
+                sliderContent.className = 'slider-content';
+                
+                allPostsData[category].forEach(post => {
+                    const card = createPostCard(post);
+                    sliderContent.appendChild(card);
+                });
+
+                section.appendChild(sliderContent);
+                slidersContainer.appendChild(section);
+                
+                addSliderDragEvents(sliderContent);
+            }
+        }
+        
+        function createPostCard(post) {
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.onclick = () => navigate(`?post=${post.id}`);
+
+            if (post.thumbnailUrl) {
+                const thumbnail = document.createElement('img');
+                thumbnail.src = post.thumbnailUrl;
+                thumbnail.alt = post.title;
+                thumbnail.className = 'card-thumbnail';
+                thumbnail.onerror = () => {
+                    card.innerHTML = `<div class="card-placeholder">${post.title}</div>`;
+                };
+                card.appendChild(thumbnail);
+            } else {
+                 card.innerHTML = `<div class="card-placeholder">${post.title}</div>`;
+            }
+
+            const titleOverlay = document.createElement('div');
+            titleOverlay.className = 'card-title-overlay';
+            titleOverlay.textContent = post.title;
+            card.appendChild(titleOverlay);
+            
+            return card;
+        }
+
+        // --- UI Interactions ---
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+
+        // Slider mouse drag scroll
+        function addSliderDragEvents(slider) {
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            slider.addEventListener('mousedown', (e) => {
+                isDown = true;
+                slider.classList.add('active');
+                startX = e.pageX - slider.offsetLeft;
+                scrollLeft = slider.scrollLeft;
+            });
+            slider.addEventListener('mouseleave', () => {
+                isDown = false;
+                slider.classList.remove('active');
+            });
+            slider.addEventListener('mouseup', () => {
+                isDown = false;
+                slider.classList.remove('active');
+            });
+            slider.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - slider.offsetLeft;
+                const walk = (x - startX) * 2; // scroll-fast
+                slider.scrollLeft = scrollLeft - walk;
+            });
+        }
+        
+        // Ensure home link works with SPA navigation
+        document.querySelector('.logo').addEventListener('click', (e) => {
+           e.preventDefault();
+           navigate('/');
+        });
+        document.querySelector('.nav-link').addEventListener('click', (e) => {
+           e.preventDefault();
+           navigate('/');
+        });
+
+    </script>
+</body>
+</html>
