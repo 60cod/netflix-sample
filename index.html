@@ -55,10 +55,17 @@
         }
 
         .logo {
-            font-size: 1.8rem;
+            font-size: 35px;
+            color: #E50914;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
             font-weight: bold;
-            color: var(--primary-color);
-            margin-right: 2rem;
+            margin-right: 1.5rem;
+        }
+
+        .logo span {
+            display: inline-block;
         }
 
         .nav-link {
@@ -343,7 +350,15 @@
 
     <header id="header">
         <div class="header-left">
-            <a href="/" class="logo">1CMTALK</a>
+            <a href="/" class="logo">
+                <span style="transform: scale(1.2) translateY(0);">1</span>
+                <span style="transform: scale(1.1) translateY(-1px);">C</span>
+                <span style="transform: scale(1) translateY(-2px);">M</span>
+                <span style="transform: scale(0.9) translateY(-3px);">T</span>
+                <span style="transform: scale(1) translateY(-2px);">A</span>
+                <span style="transform: scale(1.1) translateY(-1px);">L</span>
+                <span style="transform: scale(1.2) translateY(0);">K</span>
+            </a>
             <a href="/" class="nav-link">홈</a>
         </div>
         <div class="header-right">
@@ -352,7 +367,7 @@
                 <input type="text" placeholder="검색...">
             </div>
             <div class="profile-pic">
-                <img src="https://placehold.co/32x32/E50914/FFFFFF?text=1" alt="Profile">
+                <img src="https://placehold.co/32x32/E50914/FFFFFF?text=60" alt="Profile">
             </div>
         </div>
     </header>
