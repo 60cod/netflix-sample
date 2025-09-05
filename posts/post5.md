@@ -3,7 +3,7 @@ title: "집에서 만드는 카레 레시피"
 author: "Yugyeong Na"
 date: "2025-09-03"
 category: "Recipe"
-thumbnailUrl: "https://placehold.co/600x338/141414/ffffff?text=Thumbnail](https://t1.daumcdn.net/brunch/service/user/Xni/image/wU_OiVJJ2GLEXxEmL8HdHzVZWNM.jpg"
+thumbnailUrl: "https://t1.daumcdn.net/brunch/service/user/Xni/image/wU_OiVJJ2GLEXxEmL8HdHzVZWNM.jpg"
 ---
 
 # 집에서 만드는 기본 카레 레시피
