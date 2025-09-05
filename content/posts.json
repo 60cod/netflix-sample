@@ -10,6 +10,13 @@
   ],
   "Recipe": [
     {
+      "id": "post5",
+      "title": "집에서 만드는 카레 레시피",
+      "author": "Yugyeong Na",
+      "date": "2025-09-03",
+      "thumbnailUrl": "https://placehold.co/600x338/141414/ffffff?text=Thumbnail](https://t1.daumcdn.net/brunch/service/user/Xni/image/wU_OiVJJ2GLEXxEmL8HdHzVZWNM.jpg"
+    },
+    {
       "id": "post4",
       "title": "미역국 레시피",
       "author": "Yugyeong Na",
