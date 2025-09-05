@@ -1,1 +1,11 @@
-{}
+{
+  "Game": [
+    {
+      "id": "post3",
+      "title": "할리갈리 게임 방법",
+      "author": "Yugyeong Na",
+      "date": "2025-09-01",
+      "thumbnailUrl": "https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDA4MTRfMTky%2FMDAxNzIzNTk2MDk5MjA3.0aaZFvFpQaHKgv7j2Y1ZVUut8HdXdyujnXwZtnDmV1cg.813el-F8d6yvtYuASZY6AOikP2cTc8qeIH-2FtT0fU4g.JPEG%2Fsearch.pstatic.jpg&type=sc960_832"
+    }
+  ]
+}
