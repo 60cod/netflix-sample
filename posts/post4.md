@@ -3,10 +3,11 @@ title: "미역국 레시피"
 author: "Yugyeong Na"
 date: "2025-09-02"
 category: "Recipe"
-thumbnailUrl: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fongjinmall.co.kr%2Fbbs%2Fboard.php%3Fbo_table%3Drecipe%26wr_id%3D2&psig=AOvVaw1YSjJoQLA-F2-91r4tFbbl&ust=1757152779105000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCIDR6quuwY8DFQAAAAAdAAAAABAE"
+thumbnailUrl: "https://ongjinmall.co.kr/data/file/recipe/1040167465_w95bWi6M_e52a0c953a1b9dd9c9e452e088ce9e3732c61df8.jpg"
 ---
 
 # 🍽️ 미역국 레시피
+![미역국](https://ongjinmall.co.kr/data/file/recipe/1040167465_w95bWi6M_e52a0c953a1b9dd9c9e452e088ce9e3732c61df8.jpg)
 
 ## 재료
 - 건미역: 10g
